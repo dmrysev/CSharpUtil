@@ -1,8 +1,11 @@
 ﻿namespace CSharpUtil.Core;
 
-public class Seq {
+public static class IEnumerable {
 
-public static string joinSeqComma<T> (IEnumerable<T> seq) => string.Join(", ", seq);
-public static string joinSeqNewLine<T> (IEnumerable<T> seq) => string.Join("\n", seq);
+public static string JoinByComma<T> (this IEnumerable<T> seq) => string.Join(", ", seq);
+public static string JoinByNewLine<T> (this IEnumerable<T> seq) => string.Join("\n", seq);
+public static int CountItem<T>  (this IEnumerable<T> seq, T item) where T : IEquatable<T> =>
+    seq
+    .Aggregate(0, (total, next) => next.Equals(item) ? total + 1 : total);
 
 }
