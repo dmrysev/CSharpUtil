@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
-namespace Util.Configuration
+namespace Util
 {
     public static class ConfigurationRootExtensions
     {
