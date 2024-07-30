@@ -26,6 +26,19 @@ namespace Util
         }
     }
 
+    public static class StringExtensions
+    {
+        public static string JoinToString(this IEnumerable<string> source, string separator)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return string.Join(separator, source);
+        }
+    }
+
     public class Json
     {
         public static string RemoveFieldCaseInsensitive(string jsonString, string fieldNameToRemove)
@@ -149,6 +162,9 @@ namespace Util
         {
             public static Subject<string> NewInfoMsg = new Subject<string>();
             public static void InfoMsg(string msg) => NewInfoMsg.OnNext(msg);
+
+            public static Subject<LogEntry> NewLogEntry = new Subject<LogEntry>();
+            public static void LogEntry(LogEntry logEntry) => NewLogEntry.OnNext(logEntry);
         }
 
     }
