@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -143,5 +144,12 @@ namespace Util
                 return GetFullExceptionMessage(exceptions);
             }
         }
+
+        public class Event
+        {
+            public static Subject<string> NewInfoMsg = new Subject<string>();
+            public static void InfoMsg(string msg) => NewInfoMsg.OnNext(msg);
+        }
+
     }
 }
