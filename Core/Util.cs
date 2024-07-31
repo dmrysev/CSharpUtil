@@ -92,11 +92,11 @@ namespace Util
 
         public class LogEntry
         {
+            public string Message = "";
             public DateTime DateTimeUtc = DateTime.UtcNow;
             public LogEntryType Type = LogEntryType.Info;
-            public string StackTrace = "";
-            public string Message = "";
             public Dictionary<string, object> Data = new Dictionary<string, object>();
+            public string StackTrace = "";
 
             public LogEntry()
             {
@@ -160,11 +160,9 @@ namespace Util
 
         public class Event
         {
-            public static Subject<string> NewInfoMsg = new Subject<string>();
-            public static void InfoMsg(string msg) => NewInfoMsg.OnNext(msg);
-
             public static Subject<LogEntry> NewLogEntry = new Subject<LogEntry>();
             public static void LogEntry(LogEntry logEntry) => NewLogEntry.OnNext(logEntry);
+            public static void InfoMsg(string msg) => NewLogEntry.OnNext(new LogEntry(msg));
         }
 
     }
