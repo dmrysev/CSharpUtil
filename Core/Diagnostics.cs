@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -13,6 +15,15 @@ namespace Util.Diagnostics
         public DateTime DateTimeUtc = DateTime.UtcNow;
         public ConcurrentQueue<LogEntry> Log = new ConcurrentQueue<LogEntry>();
         public void AddLogEntry(LogEntry entry) { Log.Enqueue(entry); }
+        public string Save(string outputDirPath, string name)
+        {
+            var reportsJson = JsonConvert.SerializeObject(this, Formatting.Indented);
+            Directory.CreateDirectory(outputDirPath);
+            var reportFileName = $"{DateTime.UtcNow.ToString("yyyy.MM.dd_HH.mm.ss")}_{name}_report.json";
+            var reportOutputFilePath = Path.Combine(outputDirPath, reportFileName);
+            File.WriteAllText(reportOutputFilePath, reportsJson);
+            return reportOutputFilePath;
+        }
     }
 
     public enum LogEntryType
