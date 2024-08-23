@@ -115,6 +115,7 @@ namespace Util.Diagnostics
         public static void LogEntry(LogEntry logEntry) => NewLogEntry.OnNext(logEntry);
         public static void Info(string msg) => NewLogEntry.OnNext(new LogEntry(msg));
         public static void Info(string msg, string dataKey, object dataValue) => NewLogEntry.OnNext(new LogEntry(msg, dataKey, dataValue));
+        public static void Info(string msg, Dictionary<string, object> data) => NewLogEntry.OnNext(new LogEntry(msg, data));
         public static void Error(string msg) => NewLogEntry.OnNext(new LogEntry(msg) { Type = LogEntryType.Error });
         public static void Error(Exception e) => NewLogEntry.OnNext(new LogEntry(e));
         public static void Error(string msg, Exception e) => NewLogEntry.OnNext(new LogEntry(msg, e));
