@@ -24,6 +24,14 @@ namespace Util.Diagnostics
             File.WriteAllText(reportOutputFilePath, reportsJson);
             return reportOutputFilePath;
         }
+        public static Task<Report> LoadFromFileAsync(string reportFilePath)
+        {
+            return Util.Json.DeserializeFromFileAsync<Report>(reportFilePath);
+        }
+        public IEnumerable<string> GetMessagesOnly()
+        {
+            return Log.Select(le => le.Message);
+        }
     }
 
     public enum LogEntryType
