@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Util
@@ -71,6 +72,27 @@ namespace Util
                 }
                 return certs[0];
             }
+        }
+
+        public static List<X509Certificate2> GetCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
+        {
+            List<X509Certificate2> certificates = new List<X509Certificate2>();
+
+            X509Store store = new X509Store(storeName, storeLocation);
+            try
+            {
+                store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+                foreach (var cert in store.Certificates)
+                {
+                    certificates.Add(cert);
+                }
+            }
+            finally
+            {
+                store.Close();
+            }
+
+            return certificates;
         }
     }
 
