@@ -24,6 +24,17 @@ namespace Util
             return json.ToString();
         }
 
+        public static async Task<T> DeserializeFromFileAsync<T>(string filePath)
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var streamReader = new StreamReader(fileStream))
+            {
+                var fileContent = await streamReader.ReadToEndAsync();
+                return JsonConvert.DeserializeObject<T>(fileContent);
+            }
+        }
+
+
         public static T DeserializeFromFile<T>(string filePath)
         {
             // Ensure the file exists
