@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Util
@@ -74,26 +75,26 @@ namespace Util
             }
         }
 
-        public static List<X509Certificate2> GetCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
+        public static IEnumerable<X509Certificate2> GetCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
         {
-            List<X509Certificate2> certificates = new List<X509Certificate2>();
-
-            X509Store store = new X509Store(storeName, storeLocation);
-            try
+            using (X509Store store = new X509Store(storeName, storeLocation))
             {
-                store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-                foreach (var cert in store.Certificates)
+                try
                 {
-                    certificates.Add(cert);
+                    store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+                    return store.Certificates.Cast<X509Certificate2>();
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = $"Failed to retrieve certificates from the store. " +
+                                          $"Store Name: {storeName}, Store Location: {storeLocation}. " +
+                                          $"Operation: Opening store or accessing certificates. " +
+                                          $"Exception Message: {ex.Message}";
+                    throw new ApplicationException(errorMessage, ex);
                 }
             }
-            finally
-            {
-                store.Close();
-            }
-
-            return certificates;
         }
+
     }
 
 }
