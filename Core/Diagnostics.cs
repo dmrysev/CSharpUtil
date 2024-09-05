@@ -24,6 +24,14 @@ namespace Util.Diagnostics
             File.WriteAllText(reportOutputFilePath, reportsJson);
             return reportOutputFilePath;
         }
+        public string SaveLog(string outputDirPath, string name)
+        {
+            Directory.CreateDirectory(outputDirPath);
+            var logFileName = $"{DateTime.UtcNow.ToString("yyyy.MM.dd_HH.mm.ss")}_{name}_log.txt";
+            var logOutputFilePath = Path.Combine(outputDirPath, logFileName);
+            File.WriteAllLines(logOutputFilePath, this.GetMessagesOnly());
+            return logOutputFilePath;
+        }
         public static Task<Report> LoadFromFileAsync(string reportFilePath)
         {
             return Util.Json.DeserializeFromFileAsync<Report>(reportFilePath);
